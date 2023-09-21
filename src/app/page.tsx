@@ -38,7 +38,6 @@ export default function Home() {
   );
 
   return (
-    <>
     <div className="w-full h-[100vh]">
       {isLoading ? (
         // Display a loading message or spinner while images are loading
@@ -56,7 +55,7 @@ export default function Home() {
       ) : (
         <>
           <div className='bg-orange-600 h-[200px] flex flex-col justify-center items-center p-4'>
-            <h3 className='text-[2em] text-white font-semibold'>Rearrange these images</h3>
+            <h3 className='text-[1.5em] text-white font-semibold p-4'>Rearrange these images</h3>
               {/* Search input */}
               <input
                 type="text"
@@ -78,11 +77,9 @@ export default function Home() {
               ))
             )}
           </div>
+           <Footer />
         </>
       )}
-      <Footer />
     </div>
-    
-    </>
   );
 }
