@@ -4,6 +4,33 @@ import React, { useState, useEffect } from 'react';
 import galleryList from '@/data';
 import Footer from './components/Footer';
 import { Audio } from  'react-loader-spinner'
+import { closestCenter, DndContext } from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+
+const SortableImage = ({image, index}:any) => {
+  const {attributes, listeners, setNodeRef, transform, transition} = useSortable({ id: image.id })
+  const style = {
+    transition,
+    transform:CSS.Transform.toString(transform)
+  }
+  return(
+    <Card
+        ref={setNodeRef} {...attributes} {...listeners}
+        style={style}
+        src={image.img}
+        title={image.title}
+        id={image.id}
+        index={index}
+    />
+  )
+}
+
 
 interface ImageData {
   img: string;
@@ -24,6 +51,18 @@ export default function Home() {
   const [images, setImages] = useState<ImageData[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
+   const onDragEnd = (event: any) => {
+    const { active, over } = event;
+    if (active.id !== over.id) {
+      setImages((prevImages) => {
+        const updatedImages = arrayMove(prevImages, active.id, over.id);
+        return updatedImages;
+      });
+    }
+
+    console.log('Dragged from:', active.id, 'Dropped over:', over.id);
+  };
 
   useEffect(() => {
     // Simulate loading images from an API or source
@@ -66,16 +105,15 @@ export default function Home() {
               />
             </div>
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 m-4 justify-center items-center'>
+            <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>
+            <SortableContext items={filteredImages}>
             {React.Children.toArray(
               filteredImages.map((image, index) => (
-                <Card
-                  src={image.img}
-                  title={image.title}
-                  id={image.id}
-                  index={index}
-                />
+                <SortableImage key={image.id} image={image} />
               ))
             )}
+            </SortableContext>
+            </DndContext>
           </div>
            <Footer />
         </>
