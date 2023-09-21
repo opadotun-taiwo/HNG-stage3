@@ -79,7 +79,6 @@ export default function Home() {
   return (
     <div className="w-full h-[100vh]">
       {isLoading ? (
-        // Display a loading message or spinner while images are loading
         <div className='flex justify-center items-center w-[100%] mt-[250px]'>
         <Audio
           height="100"
@@ -95,11 +94,10 @@ export default function Home() {
         <>
           <div className='bg-orange-600 h-[200px] flex flex-col justify-center items-center p-4'>
             <h3 className='text-[1.5em] text-white font-semibold p-4'>Rearrange these images</h3>
-              {/* Search input */}
               <input
                 type="text"
                 className='w-[100%] md:w-[50%] h-[50px] p-4 rounded-xl outline-none'
-                placeholder="Search by tag"
+                placeholder="Search by tag e.g mountain, people"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
